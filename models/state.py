@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-"""state module"""
-
+"""A module containing the model for state data sets.
+"""
 from models.base_model import BaseModel
 
 
 class State(BaseModel):
-    """state class"""
-    name = ""
+    """Represents a state data set.
+    """
+    name = ''

@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-"""module amenity"""
-
+"""A module containing the model for amenity data sets.
+"""
 from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    """class amenity"""
-    name = ""
+    """Represents an amenity data set.
+    """
+    name = ''

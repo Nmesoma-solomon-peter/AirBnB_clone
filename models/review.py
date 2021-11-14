@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-"""review module"""
-
+"""A module containing the model for review data sets.
+"""
 from models.base_model import BaseModel
 
 
 class Review(BaseModel):
-    """review class"""
-    place_id = ""
-    user_id = ""
-    text = ""
+    """Represents a review data set.
+    """
+    place_id = ''
+    user_id = ''
+    text = ''

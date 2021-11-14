@@ -1,66 +1,66 @@
 #!/usr/bin/python3
+"""A module containing the base model for all data sets.
 """
-base class file
-"""
-
-import uuid
 from datetime import datetime
-import models
-from json import JSONEncoder
+from uuid import uuid4
 
 
 class BaseModel:
+    """Represents the base class for all data sets.
     """
-    =========
-    BaseModel
-    =========
-    """
-
     def __init__(self, *args, **kwargs):
-        """initialize the instance of the class"""
-        if kwargs:
-            for key, value in kwargs.items():
-                if key == "created_at" or key == "updated_at":
-                    value = datetime.strptime(
-                            value,
-                            '%Y-%m-%dT%H:%M:%S.%f')
-                elif key == "__class__":
-                    continue
+        """Initializes a new instance of the BaseModel.
 
-                setattr(self, key, value)
+        Args:
+            *args (tuple): Ignored.
+            kwargs: A dictionary of attribute keys-value pairs.
+        """
+        from models import storage
+        if len(kwargs) > 0:
+            for key, value in kwargs.items():
+                if key != '__class__':
+                    if key in ('created_at', 'updated_at'):
+                        setattr(self, key, datetime.fromisoformat(value))
+                    else:
+                        setattr(self, key, value)
+            # self.updated_at = datetime.now()
         else:
-            self.id = str(uuid.uuid4())
+            self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            models.storage.new(self)
-
-    def save(self):
-        """save new informations to the class object"""
-        self.updated_at = datetime.now()
-        models.storage.save()
-
-    def to_dict(self):
-        """return dictionary representaton of the instance"""
-        dict_repr = {}
-        for key, value in self.__dict__.items():
-            dict_repr[key] = value
-            if isinstance(value, datetime):
-                dict_repr[key] = value.strftime('%Y-%m-%dT%H:%M:%S.%f')
-        dict_repr["__class__"] = type(self).__name__
-        return dict_repr
+            storage.new(self)
 
     def __str__(self):
-        """return the string formated message when instance is called"""
-        clName = self.__class__.__name__
-        return "[{}] ({}) {}".format(clName, self.id, self.__dict__)
+        """Creates a string representation of a BaseModel instance.
 
+        Returns:
+            str: A string representation of a BaseModel instance.
+        """
+        res = '[{}] ({}) {}'.format(
+            self.__class__.__name__,
+            self.id,
+            self.__dict__
+        )
+        return res
 
-class BaseModelEncoder(JSONEncoder):
-    """JSON Encoder for BaseModel
-    """
+    def save(self):
+        """Saves the changes made to this BaseModel instance.
+        """
+        from models import storage
+        self.updated_at = datetime.now()
+        storage.save()
 
-    def default(self, o):
-        """ default"""
-        if isinstance(o, BaseModel):
-            return o.to_dict()
-        return super().default(o)
+    def to_dict(self):
+        """Returns a dictionary consisting of this BaseModel instance's
+        attibute keys and values.
+
+        Returns: A dictionary of the attribute key-value pairs.
+        """
+        res = {}
+        for key, value in self.__dict__.items():
+            if isinstance(value, datetime):
+                res[key] = value.isoformat()
+            else:
+                res[key] = value
+        res['__class__'] = self.__class__.__name__
+        return res
