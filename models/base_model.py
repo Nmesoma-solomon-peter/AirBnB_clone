@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """A module containing the base model for all data sets.
 """
-from datetime import datetime
 from uuid import uuid4
+from datetime import datetime
+
 
 
 class BaseModel:
@@ -11,7 +12,7 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Initializes a new instance of the BaseModel.
 
-        Args:
+            Args:
             *args (tuple): Ignored.
             kwargs: A dictionary of attribute keys-value pairs.
         """
