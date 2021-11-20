@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""A module for managing the AirBnB clone's command interpreter.
+"""
+A module for managing the AirBnB clone's command interpreter.
 """
 import cmd
 import re
