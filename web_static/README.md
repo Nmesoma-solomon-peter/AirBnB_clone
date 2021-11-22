@@ -1,1 +1,1 @@
-# 0x01. AirBnB clone - Web static
+my web static project containg HTML AND CSSS codes
